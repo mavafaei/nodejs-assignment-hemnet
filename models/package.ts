@@ -1,42 +1,39 @@
-import {type Association, type CreationOptional, DataTypes, type InferAttributes, type InferCreationAttributes, Model, type NonAttribute} from 'sequelize';
-import {sequelizeConnection} from '../db/config';
-import {Price} from './price';
+import { type Association, type CreationOptional, DataTypes, type InferAttributes, type InferCreationAttributes, Model, type NonAttribute } from 'sequelize';
+import { sequelizeConnection } from '../db/config';
+import { Price } from './price';
+import { MunicipalityPackages } from './municipalityPackages';
 
 class Package extends Model<InferAttributes<Package>, InferCreationAttributes<Package>> {
-	declare static associations: {
-		prices: Association<Package, Price>;
-	};
+  declare static associations: {
+    municipalityPackages: Association<Package, MunicipalityPackages>;
+  };
 
-	declare id: CreationOptional<number>;
-	declare name: string;
-	declare priceCents: number;
-	declare prices?: NonAttribute<Price[]>;
+  declare id: CreationOptional<number>;
+  declare name: string;
+  declare municipalityPackages?: NonAttribute<MunicipalityPackages[]>;
 }
 
 Package.init({
-	id: {
-		type: DataTypes.INTEGER.UNSIGNED,
-		autoIncrement: true,
-		primaryKey: true,
-	},
-	name: {
-		type: DataTypes.STRING,
-		allowNull: false,
-		unique: true,
-	},
-	priceCents: {
-		type: DataTypes.INTEGER,
-		allowNull: false,
-		defaultValue: 0,
-	},
+  id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
 }, {
-	sequelize: sequelizeConnection,
+  sequelize: sequelizeConnection,
 });
 
-Package.hasMany(Price, {
-	sourceKey: 'id',
-	foreignKey: 'packageId',
-	as: 'prices',
-});
+// Package.hasMany(MunicipalityPackages, {
+//   sourceKey: 'id',
+//   foreignKey: 'packageId',
+//   as: 'packages',
+// });
 
-export {Package};
+
+
+export { Package };
