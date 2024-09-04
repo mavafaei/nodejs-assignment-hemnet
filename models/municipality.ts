@@ -1,18 +1,14 @@
-import { type Association, type CreationOptional, DataTypes, type InferAttributes, type InferCreationAttributes, Model, type NonAttribute } from 'sequelize';
+import { type CreationOptional, DataTypes, type InferAttributes, type InferCreationAttributes, Model, type NonAttribute } from 'sequelize';
 import { sequelizeConnection } from '../db/config';
 import { MunicipalityPackages } from './municipalityPackages';
 
-class Package extends Model<InferAttributes<Package>, InferCreationAttributes<Package>> {
-  declare static associations: {
-    municipalityPackages: Association<Package, MunicipalityPackages>;
-  };
-
+class Municipality extends Model<InferAttributes<Municipality>, InferCreationAttributes<Municipality>> {
   declare id: CreationOptional<number>;
   declare name: string;
   declare municipalityPackages?: NonAttribute<MunicipalityPackages[]>;
 }
 
-Package.init({
+Municipality.init({
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
@@ -27,4 +23,4 @@ Package.init({
   sequelize: sequelizeConnection,
 });
 
-export { Package };
+export { Municipality };

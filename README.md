@@ -5,6 +5,11 @@ A company ‘MediaNow’ is selling packages - Basic, Plus, and Premium. The pri
 ## Feature request 1: Municipalities
 The company pricing expert wants to start segmenting our package prices based on the municipality the package is sold in. In other words, a package should be able to have different prices depending on a municipality. The current code doesn't really support this well (on purpose) and some structural changes are needed. We still want to have our pricing log, but now with the added municipalities.
 
+> I had to alter the database schema for this feature, so I thought I would migrate all the existing data to a new format. However, since the data was dumps and we lacked migration files, I decided to ignore it. 
+here is the new [database schema](https://dbdiagram.io/e/66d727b0eef7e08f0e90002d/66d822dbeef7e08f0ea52079). 
+ 
+
+
 Look into the pending test in `tests/services/package.spec.ts` for guidance and make all the tests pass.
 
 ## Feature request 2: Pricing history
