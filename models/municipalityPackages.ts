@@ -11,7 +11,6 @@ class MunicipalityPackages extends Model<InferAttributes<MunicipalityPackages>, 
   declare priceCents: number;
   declare prices?: NonAttribute<Price[]>;
   declare municipality: NonAttribute<Municipality>;
-  declare date: CreationOptional<Date>;
 }
 
 MunicipalityPackages.init({
@@ -25,7 +24,6 @@ MunicipalityPackages.init({
     allowNull: false,
     defaultValue: 0,
   },
-  date: DataTypes.DATE,
 }, {
   sequelize: sequelizeConnection,
 });

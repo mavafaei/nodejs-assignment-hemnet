@@ -39,48 +39,50 @@ export const seedDb = async () => {
   const premium = await Package.findOne({ where: { name: 'premium' } }) as Package;
 
 
-  // await MunicipalityPackages.bulkCreate([
-  //   { priceCents: 5000, packageId: basic.id, municipalityId: municipalityGothenburg.id },
-  //   { priceCents: 10_000, packageId: basic.id, municipalityId: municipalityStockholm.id },
-  //   { priceCents: 20_000, packageId: basic.id, municipalityId: municipalityMalmo.id },
-  // ], { validate: true });
+  await MunicipalityPackages.bulkCreate([
+    { priceCents: 5000, packageId: basic.id, municipalityId: municipalityGothenburg.id },
+    { priceCents: 10_000, packageId: basic.id, municipalityId: municipalityStockholm.id },
+    { priceCents: 20_000, packageId: basic.id, municipalityId: municipalityMalmo.id },
+  ], { validate: true });
 
-  // await MunicipalityPackages.bulkCreate([
-  //   { priceCents: 19_990, packageId: plus.id, municipalityId: municipalityGothenburg.id },
-  //   { priceCents: 29_900, packageId: plus.id, municipalityId: municipalityStockholm.id },
-  //   { priceCents: 39_900, packageId: plus.id, municipalityId: municipalityMalmo.id },
-  // ], { validate: true });
+  await MunicipalityPackages.bulkCreate([
+    { priceCents: 19_990, packageId: plus.id, municipalityId: municipalityGothenburg.id },
+    { priceCents: 29_900, packageId: plus.id, municipalityId: municipalityStockholm.id },
+    { priceCents: 39_900, packageId: plus.id, municipalityId: municipalityMalmo.id },
+  ], { validate: true });
 
-  // await MunicipalityPackages.bulkCreate([
-  //   { priceCents: 55_000, packageId: premium.id, municipalityId: municipalityGothenburg.id },
-  //   { priceCents: 66_600, packageId: premium.id, municipalityId: municipalityStockholm.id },
-  //   { priceCents: 77_700, packageId: premium.id, municipalityId: municipalityStockholm.id },
-  //   { priceCents: 88_800, packageId: premium.id, municipalityId: municipalityStockholm.id },
-  //   { priceCents: 99_900, packageId: premium.id, municipalityId: municipalityMalmo.id },
-  // ], { validate: true });
+  await MunicipalityPackages.bulkCreate([
+    { priceCents: 55_000, packageId: premium.id, municipalityId: municipalityGothenburg.id },
+    { priceCents: 66_600, packageId: premium.id, municipalityId: municipalityStockholm.id },
+    { priceCents: 77_700, packageId: premium.id, municipalityId: municipalityStockholm.id },
+    { priceCents: 88_800, packageId: premium.id, municipalityId: municipalityStockholm.id },
+    { priceCents: 99_900, packageId: premium.id, municipalityId: municipalityMalmo.id },
+  ], { validate: true });
 
-  // // In case of we want to migrate the database and current data does not have municipality 
-  // await MunicipalityPackages.bulkCreate([
-  //   { priceCents: 12_100, packageId: basic.id, municipalityId: null },
-  //   { priceCents: 12_200, packageId: plus.id, municipalityId: null },
-  //   { priceCents: 12_300, packageId: premium.id, municipalityId: null },
-  // ], { validate: true });
+  // In case of we want to migrate the database and current data does not have municipality 
+  await MunicipalityPackages.bulkCreate([
+    { priceCents: 12_100, packageId: basic.id, municipalityId: null },
+    { priceCents: 12_200, packageId: plus.id, municipalityId: null },
+    { priceCents: 12_300, packageId: premium.id, municipalityId: null },
+  ], { validate: true });
 
 
 
-  // Create prices randomly for 11 municipalityPackages and random years
-  // const prices = [];
-  // for (let i = 0; i < 100; i++) {
-  //   const year = getRandomYear();
-  //   const municipalityPackage = getRandomInt(1, 14);
-  //   prices.push({
-  //     municipalityPackageId: municipalityPackage,
-  //     priceCents: getRandomInt(1_000, 10_000),
-  //     createdAt: year,
-  //     updatedAt: year
-  //   }); 
-  // }
+  // Create prices randomly for 14 municipalityPackages and random years
+  const prices = [];
+  for (let i = 0; i < 100; i++) {
+    const year = getRandomYear();
+    const municipalityPackage = getRandomInt(1, 14);
+    prices.push({
+      municipalityPackageId: municipalityPackage,
+      prevPriceCents: getRandomInt(1_000, 10_000),
+      priceCents: getRandomInt(1_000, 10_000),
+      changedPriceDate: year,
+      createdAt: year,
+      updatedAt: year
+    });
+  }
 
-  // await Price.bulkCreate(prices, { validate: true });
+  await Price.bulkCreate(prices, { validate: true });
 
 };

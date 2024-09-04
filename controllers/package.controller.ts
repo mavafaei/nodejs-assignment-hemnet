@@ -1,7 +1,5 @@
 import { type Request, type Response } from 'express';
 import PackageService from '../services/package.service';
-import { Package } from '../models/package';
-import { Municipality } from '../models/municipality';
 
 export default {
   async getAll(_: Request, response: Response) {
@@ -13,7 +11,10 @@ export default {
     const { packageId } = request.params;
     const { price, municipalityId = null, date } = request.body;
 
-    // since packageId comes from request.params need to convert to number, better to do it validation transformer
+    /**
+     * since packageId comes from request.params need to 
+     * convert to number, better to do it validation transformer
+     */
     const pack = await PackageService.updatePackagePrice({
       packageId: +packageId,
       newPriceCents: price,

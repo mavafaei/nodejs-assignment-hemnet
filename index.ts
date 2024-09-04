@@ -13,11 +13,9 @@ app.listen(port, () => {
 app.use(express.json());
 
 //  Initialize database //
-sequelizeConnection.sync({
-  // force: true
-}).then(async () => {
+sequelizeConnection.sync({ force: true }).then(async () => {
   console.log('DB running');
-  // await seedDb();
+  await seedDb();
 });
 
 app.use('/api/packages', packagesRoutes);

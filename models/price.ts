@@ -5,9 +5,9 @@ import { MunicipalityPackages } from './municipalityPackages';
 class Price extends Model<InferAttributes<Price>, InferCreationAttributes<Price>> {
   declare id: CreationOptional<number>;
   declare municipalityPackageId: ForeignKey<MunicipalityPackages['id']>;
+  declare prevPriceCents: number;
   declare priceCents: number;
-  declare createdAt: CreationOptional<Date>;
-  declare updatedAt: CreationOptional<Date>;
+  declare changedPriceDate: CreationOptional<Date>;
 }
 
 Price.init({
@@ -16,17 +16,23 @@ Price.init({
     autoIncrement: true,
     primaryKey: true,
   },
+  prevPriceCents: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
   priceCents: {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
   },
-  createdAt: DataTypes.DATE,
-  updatedAt: DataTypes.DATE,
+  changedPriceDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW
+  },
 }, {
   sequelize: sequelizeConnection,
 });
-
-
 
 export { Price };

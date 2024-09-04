@@ -2,8 +2,6 @@ import { Municipality } from '../models/municipality';
 import { MunicipalityPackages } from '../models/municipalityPackages';
 import { Package } from '../models/package';
 import { Price } from '../models/price';
-import { get } from 'http';
-import { log } from 'console';
 import { sequelizeConnection } from '../db/config'
 
 export default {
@@ -47,7 +45,12 @@ export default {
         const municipality = municipalityId ? await Municipality.findByPk(municipalityId) : municipalityId;
         if (!municipality) municipalityId = null;
 
-        const updatePriceDate = date ? new Date(date) : new Date();
+        /**
+         * transactionDate is used for logging the price change date, it's optional
+         * and in case of not provided it defaults to current date
+         */
+        const transactionDate = date ? new Date(date) : new Date();
+
         const [currentMunicipalityPackage, createdMunicipalityPackage] = await MunicipalityPackages.findOrCreate({
           where: {
             packageId,
@@ -55,28 +58,22 @@ export default {
           },
           defaults: {
             priceCents: newPriceCents,
-            date: updatePriceDate,
           },
           transaction: t
         });
-        const oldPrice = createdMunicipalityPackage ? newPriceCents : currentMunicipalityPackage.priceCents;
-        const oldDate = currentMunicipalityPackage.date;
+        const oldPrice = createdMunicipalityPackage ? 0 : currentMunicipalityPackage.priceCents;
 
         // update municipality package and log in case of having new price
-        if (oldPrice !== newPriceCents) {
-          await Price.create({
-            municipalityPackageId: currentMunicipalityPackage.id,
-            priceCents: oldPrice,
-            createdAt: oldDate,
-          }, { transaction: t });
+        await Price.create({
+          municipalityPackageId: currentMunicipalityPackage.id,
+          prevPriceCents: oldPrice,
+          priceCents: newPriceCents,
+          changedPriceDate: transactionDate,
+        }, { transaction: t });
 
-
-
-          await currentMunicipalityPackage.update({
-            priceCents: newPriceCents,
-            date: updatePriceDate,
-          }, { transaction: t });
-        }
+        await currentMunicipalityPackage.update({
+          priceCents: newPriceCents,
+        }, { transaction: t });
 
         return currentMunicipalityPackage;
       });

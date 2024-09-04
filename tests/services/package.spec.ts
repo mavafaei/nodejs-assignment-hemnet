@@ -1,5 +1,6 @@
 import { Municipality } from '../../models/municipality';
 import { MunicipalityPackages } from '../../models/municipalityPackages';
+import { Op } from 'sequelize';
 import { Package } from '../../models/package';
 import PackageService from '../../services/package.service';
 import { Price } from '../../models/price'
@@ -38,16 +39,17 @@ describe('PackageService', () => {
     await packageService.updatePackagePrice({ packageId: pack.id, newPriceCents: 200_00 });
 
     const municipalityPackage = await MunicipalityPackages.findOne({ where: { packageId: pack.id, municipalityId: null } });
-    const priceHistory = await Price.findAll({ where: { municipalityPackageId: municipalityPackage!.id } });
+    const priceHistory = await Price.findAll({ where: { municipalityPackageId: municipalityPackage!.id, prevPriceCents: { [Op.ne]: 0 } } });
 
 
     expect(municipalityPackage).not.toBeNull();
     expect(priceHistory.length).toBe(1);
-    expect(priceHistory[0].priceCents).toBe(100_00);
+    expect(priceHistory[0].prevPriceCents).toBe(100_00);
+    expect(priceHistory[0].priceCents).toBe(200_00);
   });
 
-  // // This tests cover feature request 1. Feel free to add more tests or change
-  // // the existing one.
+  // This tests cover feature request 1. Feel free to add more tests or change
+  // the existing one.
   it('Supports adding a price for a specific municipality', async () => {
     const pack = await Package.create({ name: 'Dunderhonung' });
     const municipality = await Municipality.create({ name: 'Göteborg' });

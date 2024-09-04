@@ -5,8 +5,10 @@ export default {
   async getPriceHistory(request: Request, response: Response) {
     const { packageId, municipalityId = null, date } = request.query;
 
-    // since packageId comes from request.query need to convert
-    // to number, better to do it validation transformer
+    /**
+     * since packageId comes from request.query need to convert
+     * to number, better to do it validation transformer
+     */
     const history = await PriceService.getPriceHistory({
       packageId: +packageId!,
       municipalityId: municipalityId ? +municipalityId : null,

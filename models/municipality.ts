@@ -23,6 +23,4 @@ Municipality.init({
   sequelize: sequelizeConnection,
 });
 
-
-
 export { Municipality };
